@@ -1,3 +1,5 @@
+// controller.js
+
 import { database } from "../db/database.js";
 
 export const getAllTodosCtrl = (req, res) => {
@@ -13,7 +15,7 @@ export const createTodoCtrl = (req, res) => {
     return res.status(401).json({ message: "No autenticado" });
   }
 
-  const { title } = req.body;
+  const { title, completed } = req.body;
 
   if (!title) {
     return res.status(400).json({ message: "Falta el título" });
@@ -22,7 +24,7 @@ export const createTodoCtrl = (req, res) => {
   const newTodo = {
     id: database.todos.length + 1,
     title,
-    completed: false,
+    completed: completed || false,
     owner: req.user.id,
   };
 
@@ -49,10 +51,10 @@ export const updateTodoCtrl = (req, res) => {
   todo.title = title !== undefined ? title : todo.title;
   todo.completed = completed !== undefined ? completed : todo.completed;
 
-  return res.status(200).json({ message: "Todo actualizado" });
+  return res.status(200).json({ message: "Todo actualizado", todo });
 };
 
-export const deleteTodoCrtl = (req, res) => {
+export const deleteTodoCtrl = (req, res) => {
   if (!req.user) {
     return res.status(401).json({ message: "No autenticado" });
   }

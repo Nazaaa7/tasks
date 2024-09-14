@@ -1,4 +1,4 @@
-import { createTodoCtrl, updateTodoCtrl, deleteTodoCrtl, getAllTodosCtrl } from "../services/app.js";
+import { createTodoCtrl, updateTodoCtrl, deleteTodoCtrl, getAllTodosCtrl } from "../services/app.js";
 
 export const todosPage = () => {
   const container = document.createElement("div");
@@ -41,7 +41,12 @@ export const todosPage = () => {
 
   // Formulario para crear una tarea
   const formContainer = document.createElement("div");
-  formContainer.classList.add("hidden", "p-4", "bg-white", "shadow-md", "rounded");
+  formContainer.classList.add( "hidden",
+    "p-6",  // Aumentar el padding interno
+    "bg-white",
+    "shadow-md",
+    "rounded-lg",  // Bordes redondeados más grandes
+    "max-w-xs" );
 
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Crear Nueva Tarea";
@@ -53,6 +58,7 @@ export const todosPage = () => {
   const titleLabel = document.createElement("label");
   titleLabel.setAttribute("for", "title");
   titleLabel.textContent = "Título:";
+  titleLabel.classList.add("block", "mb-2"); // Establece el bloque y añade margen abajo
   const titleInput = document.createElement("input");
   titleInput.type = "text";
   titleInput.id = "title";
@@ -70,7 +76,8 @@ export const todosPage = () => {
 
   const ownerLabel = document.createElement("label");
   ownerLabel.setAttribute("for", "owner");
-  ownerLabel.textContent = "ID del Propietario:";
+  ownerLabel.textContent = "ID: ";
+  ownerLabel.classList.add("block", "mb-1"); // Establece el bloque y añade margen abajo
   const ownerInput = document.createElement("input");
   ownerInput.type = "text";
   ownerInput.id = "owner";
@@ -85,7 +92,7 @@ export const todosPage = () => {
 
   const cancelButton = document.createElement("button");
   cancelButton.type = "button";
-  cancelButton.classList.add("bg-red-500", "text-white", "p-2", "rounded", "hover:bg-red-600", "ml-2");
+  cancelButton.classList.add("bg-red-500", "text-white", "p-2", "rounded", "hover:bg-red-300", "ml-2");
   cancelButton.textContent = "Cancelar";
   cancelButton.addEventListener("click", () => {
     formContainer.classList.add("hidden");
@@ -168,19 +175,12 @@ export const todosPage = () => {
   // Función para renderizar tareas
   const renderTodos = async () => {
     try {
-      const response = await fetch("http://localhost:4000/todos", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include"
-      });
-      const data = await response.json();
+      const data = await getAllTodosCtrl();
+      if (!data) return;
+
       tbody.innerHTML = ""; // Limpiar el cuerpo de la tabla
 
       data.todos.forEach((todo) => {
-        if (todo.id > 10) return;
-
         const tr = document.createElement("tr");
 
         const td1 = document.createElement("td");
@@ -233,7 +233,7 @@ export const todosPage = () => {
         btnDelete.addEventListener("click", async () => {
           if (confirm("¿Estás seguro de que quieres eliminar esta tarea?")) {
             try {
-              await deleteTodo(todo.id);
+              await deleteTodoCtrl(todo.id);
               renderTodos();
             } catch (error) {
               console.error("Error eliminando tarea:", error);
