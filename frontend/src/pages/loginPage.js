@@ -6,7 +6,7 @@ export const loginPage = () => {
     "items-center",
     "justify-center",
     "h-screen",
-    "bg-gray-200"
+    "bg-indigo-200"
   );
 
   const form = document.createElement("form");
@@ -16,9 +16,9 @@ export const loginPage = () => {
     "flex-col",
     "w-1/6",
     "gap-4",
-    "bg-white",
+    "bg-indigo-100",
     "p-8",
-    "rounded",
+    "rounded-xl",
     "shadow-md"
   );
 
@@ -37,7 +37,7 @@ export const loginPage = () => {
     "w-full",
     "p-2",
     "border",
-    "border-gray-300",
+    "border-gray-500",
     "rounded"
   );
   usernameInput.placeholder = "Username";
@@ -52,7 +52,7 @@ export const loginPage = () => {
     "w-full",
     "p-2",
     "border",
-    "border-gray-300",
+    "border-gray-500",
     "rounded"
   );
   passwordInput.placeholder = "Password";
@@ -62,8 +62,8 @@ export const loginPage = () => {
   submitButton.type = "submit";
   submitButton.classList.add(
     "w-full",
-    "bg-blue-500",
-    "hover:bg-blue-700",
+    "bg-indigo-800",
+    "hover:bg-indigo-500",
     "text-white",
     "font-bold",
     "py-2",

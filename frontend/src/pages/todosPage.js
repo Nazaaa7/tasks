@@ -9,44 +9,43 @@ export const todosPage = () => {
     "items-center",
     "justify-center",
     "h-screen",
-    "bg-gray-200"
+    "bg-indigo-100",
+    "scroll"
   );
 
-  // Botón Home
-  const btnHome = document.createElement("button");
-  btnHome.classList.add(
-    "bg-blue-500",
-    "text-white",
-    "p-2",
-    "rounded",
-    "hover:bg-blue-600",
-    "mb-4"
-  );
-  btnHome.textContent = "Home";
-  btnHome.addEventListener("click", () => {
-    window.location.pathname = "/home";
-  });
+  // Barra de navegación
+  const nav = document.createElement("nav");
+  nav.classList.add("bg-blue-900", "w-full", "p-4", "mb-4");
 
-  // Botón Crear tarea
-  const btnAdd = document.createElement("button");
-  btnAdd.classList.add(
-    "bg-blue-500",
-    "text-white",
-    "p-2",
-    "rounded",
-    "hover:bg-blue-600",
-    "mb-4"
-  );
-  btnAdd.textContent = "Crear tarea";
+  const navList = document.createElement("ul");
+  navList.classList.add("flex", "justify-around", "items-center");
+
+  const navHome = document.createElement("li");
+  const homeLink = document.createElement("a");
+  homeLink.textContent = "Home";
+  homeLink.href = "/home";
+  homeLink.classList.add("text-white", "hover:underline");
+  navHome.appendChild(homeLink);
+
+
+  // Botón Crear Tarea en la barra de navegación
+  const navCreateTask = document.createElement("li");
+  const createTaskButton = document.createElement("button");
+  createTaskButton.textContent = "New Todo";
+  createTaskButton.classList.add("bg-white", "text-blue-500", "p-2", "rounded", "hover:bg-blue-600", "hover:text-white");
+  navCreateTask.appendChild(createTaskButton);
+
+  navList.appendChild(navHome);
+  navList.appendChild(navCreateTask);
+
+  nav.appendChild(navList);
+
+  // Añadir la barra de navegación al contenedor principal
+  container.appendChild(nav);
 
   // Formulario para crear una tarea
   const formContainer = document.createElement("div");
-  formContainer.classList.add( "hidden",
-    "p-6",  // Aumentar el padding interno
-    "bg-white",
-    "shadow-md",
-    "rounded-lg",  // Bordes redondeados más grandes
-    "max-w-xs" );
+  formContainer.classList.add("hidden", "p-6", "bg-white", "shadow-md", "rounded-lg", "max-w-xs");
 
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Crear Nueva Tarea";
@@ -58,7 +57,7 @@ export const todosPage = () => {
   const titleLabel = document.createElement("label");
   titleLabel.setAttribute("for", "title");
   titleLabel.textContent = "Título:";
-  titleLabel.classList.add("block", "mb-2"); // Establece el bloque y añade margen abajo
+  titleLabel.classList.add("block", "mb-2");
   const titleInput = document.createElement("input");
   titleInput.type = "text";
   titleInput.id = "title";
@@ -77,7 +76,7 @@ export const todosPage = () => {
   const ownerLabel = document.createElement("label");
   ownerLabel.setAttribute("for", "owner");
   ownerLabel.textContent = "ID: ";
-  ownerLabel.classList.add("block", "mb-1"); // Establece el bloque y añade margen abajo
+  ownerLabel.classList.add("block", "mb-1");
   const ownerInput = document.createElement("input");
   ownerInput.type = "text";
   ownerInput.id = "owner";
@@ -96,7 +95,7 @@ export const todosPage = () => {
   cancelButton.textContent = "Cancelar";
   cancelButton.addEventListener("click", () => {
     formContainer.classList.add("hidden");
-    form.reset(); // Limpiar formulario al cancelar
+    form.reset();
   });
 
   form.appendChild(titleLabel);
@@ -109,29 +108,20 @@ export const todosPage = () => {
   form.appendChild(cancelButton);
   formContainer.appendChild(form);
 
-  // Añadir los botones y el formulario al contenedor
-  container.appendChild(btnHome);
-  container.appendChild(btnAdd);
   container.appendChild(formContainer);
 
-  btnAdd.addEventListener("click", () => {
+  // Evento del botón Crear tarea
+  createTaskButton.addEventListener("click", () => {
     formContainer.classList.toggle("hidden");
-    form.reset(); // Limpiar formulario al mostrar
+    form.reset();
   });
 
-  // Tabla para mostrar tareas
   const titleElement = document.createElement("h1");
   titleElement.classList.add("text-3xl", "font-bold", "mb-4");
-  titleElement.textContent = "List of Todos";
+  titleElement.textContent = "List of Todo's";
 
   const table = document.createElement("table");
-  table.classList.add(
-    "w-1/2",
-    "bg-white",
-    "shadow-md",
-    "h-[800px]",
-    "overflow-y-scroll"
-  );
+  table.classList.add("w-1/2", "bg-blue-50", "shadow-md", "h-[800px]", "scroll", "rounded-xl");
 
   const thead = document.createElement("thead");
   const tr = document.createElement("tr");
@@ -172,13 +162,12 @@ export const todosPage = () => {
   container.appendChild(titleElement);
   container.appendChild(table);
 
-  // Función para renderizar tareas
   const renderTodos = async () => {
     try {
       const data = await getAllTodosCtrl();
       if (!data) return;
 
-      tbody.innerHTML = ""; // Limpiar el cuerpo de la tabla
+      tbody.innerHTML = "";
 
       data.todos.forEach((todo) => {
         const tr = document.createElement("tr");
@@ -202,7 +191,6 @@ export const todosPage = () => {
         const td5 = document.createElement("td");
         td5.classList.add("border", "px-4", "py-2", "flex", "justify-center", "items-center", "space-x-2");
 
-        // Crear botón Editar
         const btnEdit = document.createElement("button");
         btnEdit.classList.add(
           "bg-blue-500",
@@ -217,10 +205,9 @@ export const todosPage = () => {
           titleInput.value = todo.title;
           completedInput.checked = todo.completed;
           ownerInput.value = todo.owner;
-          form.dataset.id = todo.id; // Establecer el ID de la tarea en el formulario
+          form.dataset.id = todo.id;
         });
 
-        // Crear botón Eliminar
         const btnDelete = document.createElement("button");
         btnDelete.classList.add(
           "bg-red-500",
@@ -256,25 +243,22 @@ export const todosPage = () => {
     }
   };
 
-  // Manejar el envío del formulario
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const title = titleInput.value;
     const completed = completedInput.checked;
     const owner = ownerInput.value;
-    const id = form.dataset.id; // Obtener el ID de la tarea si se está editando
+    const id = form.dataset.id;
 
     try {
       if (id) {
-        // Si hay un ID, actualizar la tarea
         await updateTodoCtrl(id, { title, completed, owner });
       } else {
-        // Si no hay ID, crear una nueva tarea
         await createTodoCtrl({ title, completed, owner });
       }
       form.reset();
-      form.dataset.id = ""; // Limpiar el ID del formulario
+      form.dataset.id = ""; 
       formContainer.classList.add("hidden");
       renderTodos();
     } catch (error) {

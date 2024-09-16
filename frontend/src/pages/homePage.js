@@ -6,7 +6,7 @@ export const homePage = () => {
     "items-center",
     "justify-center",
     "h-screen",
-    "bg-gray-200",
+    "bg-indigo-200",
     "flex-col",
     "gap-4"
   );
@@ -14,7 +14,7 @@ export const homePage = () => {
   const title = document.createElement("h1");
 
   title.classList.add("text-2xl", "font-bold", "mb-4");
-  title.textContent = "Home Page";
+  title.textContent = "Home ";
 
   const btnLogout = document.createElement("button");
 
